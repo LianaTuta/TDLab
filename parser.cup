@@ -31,29 +31,65 @@ init with {:
 scan with {: return lexer.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal            SEMI, PLUS, MINUS, UMINUS, TIMES, LPAREN, RPAREN;
-terminal Integer    NUMBER;        // our scanner provides numbers as integers
+
+// Define the terminals (tokens)
+// Terminal token definitions in Parser.cup
+terminal String HTML_START, HTML_END;
+terminal String LINK;
+terminal HEAD_START, HEAD_END;
+terminal BODY_START, BODY_END;
+terminal String P_START, P_END;
+terminal A_START, A_END, IMG, BR;
+terminal HREF, SRC, ATTRIBUTE_VALUE, ATTRIBUTE_NAME, ATTRIBUTE, TAG_CLOSE, SELF_CLOSE;
+terminal String TEXT_CONTENT;
+terminal String H1_START, H1_END, H2_START, H2_END;
+terminal TEXT_CONTENT_ATR;
+
+// Non-terminal definitions and grammar rules go here
 
 /* Non terminals */
-non terminal            expr_list;
-non terminal Integer    expr;      // used to store evaluated subexpressions
 
+
+non terminal String html_element;
+non terminal String head_element;
+non terminal String body_element;
+non terminal String content_element;
+non terminal String h1_element;
+non terminal String h2_element;
+non terminal String paragraph_element;
+non terminal String link_element;
+non terminal String element;
+non terminal String anchor_element;
 /* Precedences */
-precedence left PLUS, MINUS;
-precedence left TIMES;
-precedence left UMINUS;
-
 /* The grammar rules */
-expr_list ::= expr_list expr:e SEMI         {: System.out.println(e); :}
-            | expr:e SEMI                   {: System.out.println(e); :}
-            ;
-            
-expr      ::= expr:e1 PLUS  expr:e2         {: RESULT = e1+e2;        :}
-             | expr:e1 MINUS expr:e2        {: RESULT = e1-e2;        :}
-             | expr:e1 TIMES expr:e2        {: RESULT = e1*e2;        :}
-             | MINUS expr:e                 {: RESULT = -e;           :}
-             %prec UMINUS
-             | LPAREN expr:e RPAREN	         {: RESULT = e;           :}
-             | NUMBER:n	                     {: RESULT = n;           :}
-             ;
-       
+
+html_element ::= HTML_START head_element body_element HTML_END
+{: System.out.println("Valid element html"); :};
+head_element ::= HEAD_START TEXT_CONTENT HEAD_END
+{: System.out.println("Valid head element"); :};
+body_element ::= BODY_START content_element  BODY_END
+                  | 
+ ;
+
+content_element ::= content_element element
+                  | 
+;
+element ::= h1_element
+          | h2_element
+          | paragraph_element
+          | anchor_element
+          | TEXT_CONTENT 
+          | BR;
+          
+h2_element ::= H2_START TEXT_CONTENT H2_END
+{: System.out.println("Valid <h2> element"); :};
+h1_element ::= H1_START TEXT_CONTENT H1_END
+{: System.out.println("Valid <h1> element"); :};
+paragraph_element ::= P_START TEXT_CONTENT P_END
+{: System.out.println("Valid <p> element"); :}; 
+
+anchor_element ::= A_START TEXT_CONTENT A_END
+                  {: System.out.println("Valid <a> element with link"); :};
+
+
+                 

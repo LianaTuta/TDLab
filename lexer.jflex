@@ -55,14 +55,10 @@ import java.io.InputStreamReader;
 %}
 
 Newline    = \r | \n | \r\n
-Whitespace = [ \t\f] | {Newline}
+Whitespace = [ \t\n\r]+ | {Newline}
 Number     = [0-9]+
 
-/* comments */
-Comment = {TraditionalComment} | {EndOfLineComment}
-TraditionalComment = "/*" {CommentContent} \*+ "/"
-EndOfLineComment = "//" [^\r\n]* {Newline}
-CommentContent = ( [^*] | \*+[^*/] )*
+
 
 ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
 
@@ -72,23 +68,34 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
 %eofval}
 
 %state CODESEG
-
+%state ATTRSTATE
+%state CONTENTSTATE
+%state HREF_STATE
 %%  
 
 <YYINITIAL> {
+	"<html>"           { return symbolFactory.newSymbol("HTML_START", HTML_START); }
+    "</html>"          { return symbolFactory.newSymbol("HTML_END", HTML_END); }
+    "<head>"           { return symbolFactory.newSymbol("HEAD_START", HEAD_START); }
+    "</head>"          { return symbolFactory.newSymbol("HEAD_END", HEAD_END); }
+    "<body>"           { return symbolFactory.newSymbol("BODY_START", BODY_START); }
+    "</body>"          { return symbolFactory.newSymbol("BODY_END", BODY_END); }
+    "<p>"              { return symbolFactory.newSymbol("P_START", P_START); }
+    "</p>"             { return symbolFactory.newSymbol("P_END", P_END); }
+    "<a"               { return symbolFactory.newSymbol("A_START", A_START); } 
+    "</a>"             { return symbolFactory.newSymbol("A_END", A_END); }
+    "<img"             { return symbolFactory.newSymbol("IMG", IMG); }  
+    "<br/>"            { return symbolFactory.newSymbol("BR", BR); }  
+    "<h1>"             { return symbolFactory.newSymbol("H1_START", H1_START); }
+    "</h1>"            { return symbolFactory.newSymbol("H1_END", H1_END); }
+    "<h2>"             { return symbolFactory.newSymbol("H2_START", H2_START); }
+    "</h2>"            { return symbolFactory.newSymbol("H2_END", H2_END); }
+	{Whitespace}       {}
+     [^<]+               { return symbolFactory.newSymbol("TEXT_CONTENT", TEXT_CONTENT, yytext().trim()); }
 
-  {Whitespace} {                              }
-  ";"          { return symbolFactory.newSymbol("SEMI", SEMI); }
-  "+"          { return symbolFactory.newSymbol("PLUS", PLUS); }
-  "-"          { return symbolFactory.newSymbol("MINUS", MINUS); }
-  "*"          { return symbolFactory.newSymbol("TIMES", TIMES); }
-  "n"          { return symbolFactory.newSymbol("UMINUS", UMINUS); }
-  "("          { return symbolFactory.newSymbol("LPAREN", LPAREN); }
-  ")"          { return symbolFactory.newSymbol("RPAREN", RPAREN); }
-  {Number}     { return symbolFactory.newSymbol("NUMBER", NUMBER, Integer.parseInt(yytext())); }
+// Catch-all for unrecognized characters
+.                   { emit_warning("Unrecognized character here '" + yytext() + "' -- ignored"); }
+
 }
 
 
-
-// error fallback
-.|\n          { emit_warning("Unrecognized character '" +yytext()+"' -- ignored"); }
