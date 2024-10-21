@@ -1,1 +1,12 @@
-27+15;
+<html>
+    <head>
+        Sample Document
+    </head>
+    <body>
+        
+       <p>This is a paragraph.</p>
+       <h1>This is a heading</h1>
+    	        <p>This is a paragraph with a .</p>
+    	        <a>link</a>
+    </body>
+</html>
