@@ -8,27 +8,141 @@ package cup.example;
 /** CUP generated interface containing symbol constants. */
 public interface sym {
   /* terminals */
-  public static final int MINUS = 4;
-  public static final int UMINUS = 5;
-  public static final int NUMBER = 9;
-  public static final int SEMI = 2;
+  public static final int H3_END = 36;
+  public static final int TABLE_START = 49;
+  public static final int OPTION_START = 64;
+  public static final int A_END = 18;
+  public static final int LI_END = 48;
+  public static final int SELECT_START = 62;
+  public static final int EQUALS = 7;
+  public static final int INPUT = 59;
+  public static final int SELECT_END = 63;
+  public static final int H6_END = 42;
+  public static final int ATTRIBUTE_NAME_CLASS = 9;
+  public static final int TABLE_END = 50;
+  public static final int HEAD_START = 11;
+  public static final int H2_END = 32;
+  public static final int SEMICOLON = 6;
+  public static final int TD_START = 53;
+  public static final int TITLE_START = 33;
+  public static final int H1_START = 29;
+  public static final int H3_START = 35;
+  public static final int TH_START = 55;
+  public static final int H5_START = 39;
+  public static final int H2_START = 31;
+  public static final int H4_START = 37;
+  public static final int TR_START = 51;
+  public static final int H6_START = 41;
+  public static final int FORM_START = 57;
+  public static final int QUOTE = 5;
+  public static final int UL_START = 43;
+  public static final int H5_END = 40;
+  public static final int OPTION_END = 65;
+  public static final int TH_END = 56;
   public static final int EOF = 0;
-  public static final int PLUS = 3;
+  public static final int LINK = 4;
+  public static final int BODY_START = 13;
   public static final int error = 1;
-  public static final int RPAREN = 8;
-  public static final int TIMES = 6;
-  public static final int LPAREN = 7;
+  public static final int ATTRIBUTE_VALUE = 23;
+  public static final int H1_END = 30;
+  public static final int HEAD_END = 12;
+  public static final int HTML_START = 2;
+  public static final int TD_END = 54;
+  public static final int BR = 20;
+  public static final int TEXT_CONTENT = 28;
+  public static final int HTML_END = 3;
+  public static final int HR = 66;
+  public static final int IMG = 19;
+  public static final int SELF_CLOSE = 27;
+  public static final int ATTRIBUTE_NAME_HREF = 10;
+  public static final int H4_END = 38;
+  public static final int FORM_END = 58;
+  public static final int TR_END = 52;
+  public static final int ATTRIBUTE_NAME = 24;
+  public static final int LI_START = 47;
+  public static final int ATTRIBUTE_NAME_STYLE = 8;
+  public static final int A_START = 17;
+  public static final int HREF = 21;
+  public static final int OL_END = 46;
+  public static final int P_START = 15;
+  public static final int TITLE_END = 34;
+  public static final int UL_END = 44;
+  public static final int BUTTON_START = 60;
+  public static final int SRC = 22;
+  public static final int ATTRIBUTE = 25;
+  public static final int P_END = 16;
+  public static final int BODY_END = 14;
+  public static final int BUTTON_END = 61;
+  public static final int TAG_CLOSE = 26;
+  public static final int OL_START = 45;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "SEMI",
-  "PLUS",
-  "MINUS",
-  "UMINUS",
-  "TIMES",
-  "LPAREN",
-  "RPAREN",
-  "NUMBER"
+  "HTML_START",
+  "HTML_END",
+  "LINK",
+  "QUOTE",
+  "SEMICOLON",
+  "EQUALS",
+  "ATTRIBUTE_NAME_STYLE",
+  "ATTRIBUTE_NAME_CLASS",
+  "ATTRIBUTE_NAME_HREF",
+  "HEAD_START",
+  "HEAD_END",
+  "BODY_START",
+  "BODY_END",
+  "P_START",
+  "P_END",
+  "A_START",
+  "A_END",
+  "IMG",
+  "BR",
+  "HREF",
+  "SRC",
+  "ATTRIBUTE_VALUE",
+  "ATTRIBUTE_NAME",
+  "ATTRIBUTE",
+  "TAG_CLOSE",
+  "SELF_CLOSE",
+  "TEXT_CONTENT",
+  "H1_START",
+  "H1_END",
+  "H2_START",
+  "H2_END",
+  "TITLE_START",
+  "TITLE_END",
+  "H3_START",
+  "H3_END",
+  "H4_START",
+  "H4_END",
+  "H5_START",
+  "H5_END",
+  "H6_START",
+  "H6_END",
+  "UL_START",
+  "UL_END",
+  "OL_START",
+  "OL_END",
+  "LI_START",
+  "LI_END",
+  "TABLE_START",
+  "TABLE_END",
+  "TR_START",
+  "TR_END",
+  "TD_START",
+  "TD_END",
+  "TH_START",
+  "TH_END",
+  "FORM_START",
+  "FORM_END",
+  "INPUT",
+  "BUTTON_START",
+  "BUTTON_END",
+  "SELECT_START",
+  "SELECT_END",
+  "OPTION_START",
+  "OPTION_END",
+  "HR"
   };
 }
 
