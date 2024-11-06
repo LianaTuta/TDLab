@@ -36,6 +36,8 @@ scan with {: return lexer.next_token(); :};
 // Terminal token definitions in Parser.cup
 terminal String HTML_START, HTML_END;
 terminal String LINK;
+terminal String QUOTE, SEMICOLON, EQUALS;
+terminal ATTRIBUTE_NAME_STYLE, ATTRIBUTE_NAME_CLASS, ATTRIBUTE_NAME_HREF;
 terminal HEAD_START, HEAD_END;
 terminal BODY_START, BODY_END;
 terminal String P_START, P_END;
@@ -43,7 +45,22 @@ terminal A_START, A_END, IMG, BR;
 terminal HREF, SRC, ATTRIBUTE_VALUE, ATTRIBUTE_NAME, ATTRIBUTE, TAG_CLOSE, SELF_CLOSE;
 terminal String TEXT_CONTENT;
 terminal String H1_START, H1_END, H2_START, H2_END;
-terminal TEXT_CONTENT_ATR;
+terminal String TITLE_START, TITLE_END;
+terminal String H3_START, H3_END, H4_START, H4_END, H5_START, H5_END, H6_START, H6_END;
+terminal UL_START, UL_END;
+terminal OL_START, OL_END;
+terminal LI_START, LI_END;
+terminal TABLE_START, TABLE_END;
+terminal TR_START, TR_END;
+terminal TD_START, TD_END;
+terminal TH_START, TH_END;
+terminal FORM_START, FORM_END;
+terminal INPUT;
+terminal BUTTON_START, BUTTON_END;
+terminal SELECT_START, SELECT_END;
+terminal OPTION_START, OPTION_END;
+terminal HR;
+
 
 // Non-terminal definitions and grammar rules go here
 
