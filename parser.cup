@@ -38,11 +38,11 @@ terminal String HTML_START, HTML_END;
 terminal String LINK;
 terminal String QUOTE, SEMICOLON, EQUALS;
 terminal ATTRIBUTE_NAME_STYLE, ATTRIBUTE_NAME_CLASS, ATTRIBUTE_NAME_HREF;
-terminal HEAD_START, HEAD_END;
+terminal string HEAD_START, HEAD_END;
 terminal BODY_START, BODY_END;
 terminal String P_START, P_END;
 terminal A_START, A_END, IMG, BR;
-terminal HREF, SRC, ATTRIBUTE_VALUE, ATTRIBUTE_NAME, ATTRIBUTE, TAG_CLOSE, SELF_CLOSE;
+terminal HREF, SRC, ATTRIBUTE_VALUE, ATTRIBUTE_NAME, ATTRIBUTE, TAG_CLOSE, TAG_OPEN, SELF_CLOSE;
 terminal String TEXT_CONTENT;
 terminal String H1_START, H1_END, H2_START, H2_END;
 terminal String TITLE_START, TITLE_END;
@@ -71,42 +71,92 @@ non terminal String html_element;
 non terminal String head_element;
 non terminal String body_element;
 non terminal String content_element;
-non terminal String h1_element;
-non terminal String h2_element;
+non terminal String heading;
+non terminal String h1_element, h2_element, h3_element, h4_element, h5_element,h6_element;
 non terminal String paragraph_element;
 non terminal String link_element;
 non terminal String element;
-non terminal String anchor_element;
+non terminal String anchor_element, anchor_close;
+non terminal String list_element, ordered_list_element, list_elements;
 /* Precedences */
 /* The grammar rules */
 
-html_element ::= HTML_START head_element body_element HTML_END
-{: System.out.println("Valid element html"); :};
-head_element ::= HEAD_START TEXT_CONTENT HEAD_END
-{: System.out.println("Valid head element"); :};
-body_element ::= BODY_START content_element  BODY_END
-                  | 
- ;
+/*
+html_element ::= TAG_OPEN HTML_START TAG_CLOSE head_element body_element TAG_OPEN HTML_END TAG_CLOSE
+				{: System.out.println("Valid element html"); :}
+				;
+head_element ::= TAG_OPEN HEAD_START TAG_CLOSE TEXT_CONTENT TAG_OPEN HEAD_END TAG_CLOSE
+				{: System.out.println("Valid head element"); :}
+				;
+				
+body_element ::= TAG_OPEN BODY_START TAG_CLOSE content_element TAG_OPEN BODY_END TAG_CLOSE
+				{: System.out.println("Valid body element"); :}
+ 				;
 
 content_element ::= content_element element
                   | 
-;
-element ::= h1_element
-          | h2_element
+				;
+element ::= heading
           | paragraph_element
           | anchor_element
           | TEXT_CONTENT 
-          | BR;
+          | BR
+          | ordered_list_element
+          |
+          ;
           
-h2_element ::= H2_START TEXT_CONTENT H2_END
-{: System.out.println("Valid <h2> element"); :};
-h1_element ::= H1_START TEXT_CONTENT H1_END
-{: System.out.println("Valid <h1> element"); :};
-paragraph_element ::= P_START TEXT_CONTENT P_END
-{: System.out.println("Valid <p> element"); :}; 
+heading ::= h1_element
+          | h2_element
+          | h3_element
+          | h4_element
+          | h5_element
+          | h6_element 
+          |         
+          ;
+h1_element ::= TAG_OPEN H1_START TAG_CLOSE  TEXT_CONTENT TAG_OPEN H1_END TAG_CLOSE
+			{: System.out.println("Valid <h1> element"); :}
+			;
+h2_element ::= TAG_OPEN H2_START TAG_CLOSE TEXT_CONTENT TAG_OPEN H2_END TAG_CLOSE
+				{: System.out.println("Valid <h2> element"); :}
+				;
+h3_element ::= TAG_OPEN H3_START TAG_CLOSE TEXT_CONTENT TAG_OPEN H3_END TAG_CLOSE
+				{: System.out.println("Valid <h3> element"); :};
+h4_element ::= TAG_OPEN H4_START TAG_CLOSE TEXT_CONTENT TAG_OPEN H4_END TAG_CLOSE
+				{: System.out.println("Valid <h4> element"); :}
+				;
+h5_element ::= TAG_OPEN H5_START TAG_CLOSE TEXT_CONTENT TAG_OPEN H5_END TAG_CLOSE
+				{: System.out.println("Valid <h5> element"); :}
+				;				
+h6_element ::= TAG_OPEN H6_START TAG_CLOSE TEXT_CONTENT TAG_OPEN H6_END TAG_CLOSE
+				{: System.out.println("Valid <h6> element"); :}
+				;
+				
+anchor_element ::= TAG_OPEN A_START ATTRIBUTE_NAME_HREF EQUALS ATTRIBUTE_VALUE TAG_CLOSE TEXT_CONTENT TAG_OPEN A_END TAG_CLOSE
+                  {: System.out.println("Valid <a> element with link"); :}
+                  ;
+                  
+paragraph_element ::= TAG_OPEN P_START TAG_CLOSE TEXT_CONTENT TAG_OPEN P_END TAG_CLOSE
+					{: System.out.println("Valid <p> element"); :}
+					;
+*/
+	
+list_element ::= TAG_OPEN LI_START TAG_CLOSE TEXT_CONTENT TAG_OPEN LI_END TAG_CLOSE
+               {: System.out.println("Valid <li> element"); :}
+               | 
+             ;
 
-anchor_element ::= A_START TEXT_CONTENT A_END
-                  {: System.out.println("Valid <a> element with link"); :};
+
+
+list_elements ::= list_element list_elements
+                | list_element
+                ;
+
+/*
+ordered_list_element ::= TAG_OPEN OL_START TAG_CLOSE list_elements TAG_OPEN OL_END TAG_CLOSE
+                        {: System.out.println("Valid ordered list <ol> with multiple items"); :}
+                      ;
+*/
+
 
 
                  
