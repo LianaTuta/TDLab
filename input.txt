@@ -3,56 +3,5 @@
     <title>Sample Page</title>
 </head>
 <body>
-    <h1>Welcome to Our Website!</h1>
-    <p>This is a randomly generated paragraph of text to make this page look interesting.</p>
-    <h2>Explore Our Services</h2>
-    <h3>Web Development</h3>
-    <h4>Mobile Application Development</h4>
-    <h5>Consulting</h5>
-    <h6>Contact Us</h6>
-    <pre><a>Click here for more info</a></pre>
-
-    <ol>
-        <li>Coffee - A refreshing beverage</li>
-        <li>Tea - A soothing drink</li>
-        <li>Milk - A source of calcium</li>
-    </ol>
-
-    <ul>
-        <li>Coffee - A hot drink to energize</li>
-        <li>Tea - A calming brew</li>
-        <li>Milk - Essential for strong bones</li>
-    </ul>
-
-    <address>
-        Email us at <a href="mailto:support@example.com">support@example.com</a>
-    </address>
-
-    <address>
-        <p>If you have any queries, feel free to reach out!</p>
-    </address>
-
-    <table border="1">
-        <tr>
-            <th>Company</th>
-            <th>Contact</th>
-            <th>Country</th>
-        </tr>
-        <tr>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-        </tr>
-        <tr>
-            <td><p>test</p>Exotic Foods</td>
-            <td>Linda O'Connell</td>
-            <td>Australia</td>
-        </tr>
-    </table>
 </body>
 </html>

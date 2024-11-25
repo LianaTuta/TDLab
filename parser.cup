@@ -35,9 +35,8 @@ scan with {: return lexer.next_token(); :};
 // Define the terminals (tokens)
 // Terminal token definitions in Parser.cup
 terminal String HTML_START, HTML_END;
-terminal String LINK;
-terminal String QUOTE, SEMICOLON, EQUALS;
-terminal ATTRIBUTE_NAME_STYLE, ATTRIBUTE_NAME_CLASS, ATTRIBUTE_NAME_HREF;
+terminal String WBR;
+terminal String PARAM;
 terminal string HEAD_START, HEAD_END;
 terminal BODY_START, BODY_END;
 terminal String P_START, P_END;
@@ -80,87 +79,145 @@ terminal NOBR_START, NOBR_END;
 terminal PRE_START, PRE_END;
 terminal CAPTION_START, CAPTION_END;
 
+terminal CITE_START, CITE_END;
+terminal CODE_START, CODE_END;
+terminal DFN_START, DFN_END;
+terminal EM_START, EM_END;
+terminal KBD_START, KBD_END;
+terminal STRONG_START, STRONG_END;
+terminal VAR_START, VAR_END;
+terminal LINK, META, NEXTID, BASE;
+terminal I_START, I_END;
+terminal FONT_START, FONT_END;
+terminal SMALL_START, SMALL_END;
+terminal S_START, S_END;
+terminal STRIKE_START, STRIKE_END;
+terminal SUB_START, SUB_END;
+terminal SUP_START, SUP_END;
+terminal TT_START, TT_END;
+terminal U_START, U_END;
+terminal ISINDEX;
+terminal XMP_START, XMP_END;
+terminal BGSOUND;
+terminal AREA, MAP_START, MAP_END;
+terminal MARQUEE_START, MARQUEE_END;
+terminal  FRAMESET_START, FRAMESET_END;
+terminal NOFRAMES_START, NOFRAMES_END, FRAME;
+
+
 // Non-terminal definitions and grammar rules go here
 
 /* Non terminals */
 
 
-non terminal String html_element;
-non terminal String head_element;
-non terminal String body_element;
-non terminal String content_element;
+non terminal String html_tag, html_content;
+non terminal String head_tag;
+non terminal String body_tag;
+non terminal String body_content_list;
 non terminal String heading;
 non terminal String h1_element, h2_element, h3_element, h4_element, h5_element,h6_element;
-non terminal String paragraph_element;
-non terminal String link_element;
-non terminal String element;
-non terminal String anchor_element, anchor_content_element, anchor_content_elements;
-non terminal String list_element, list_elements;
-non terminal String lists , ordered_list_element, unordered_list_element;
-non terminal String address_element, address_content_element, address_content_elements;
-non terminal String b_element;
-non terminal String applet_element, applet_content_element;
-non terminal String basefont_element, basefont_content_element;
-non terminal String block_content, block_element, block_elements;
+non terminal String p_tag;
+non terminal String a_tag, a_content, a_content_list;
+non terminal String list_tag, list_tag_list;
+non terminal String lists , ol_tag, ul_tag;
+non terminal String adrress_tag, address_content, address_content_list;
+non terminal String b_tag;
+non terminal String applet_tag, applet_content;
+non terminal String basefont_tag, basefont_content_element;
+non terminal String block_content, block_element, block;
 non terminal String body_content;
-non terminal String big_element;
-non terminal String blockqoute_element;
-non terminal String center_element;
-non terminal String dir_element;
-non terminal String div_element;
-non terminal String flow_element, flow_content;
-non terminal String dt_element, dd_element;
-non terminal String dl_content, dl_content_elements, dl_element;
-non terminal String form_element, form_content_elements, form_content;
-non terminal String listing_element;
-non terminal String textarea_element;
-non terminal String select_element;
-non terminal String option_element, option_elements;
-non terminal String menu_element;
-non terminal String nobr_element;
-non terminal String pre_element, pre_content, pre_content_elements;
-non terminal String table_element , tr_element, table_cell, table_cell_elements, td_element, tr_elements,  th_element, caption_element; 
-non terminal String title_element, head_content, head_content_elements;
+non terminal String big_tag;
+non terminal String blockqoute_tag;
+non terminal String center_tag;
+non terminal String dir_tag;
+non terminal String div_tag;
+non terminal String flow, flow_content;
+non terminal String dt_tag, dd_tag;
+non terminal String dl_content, dl_content_list, dl_tag;
+non terminal String form_tag, form_content_list, form_content;
+non terminal String listing_tag;
+non terminal String textarea_tag;
+non terminal String select_tag;
+non terminal String option_tag, option_tag_list;
+non terminal String menu_tag;
+non terminal String nobr_tag;
+non terminal String pre_tag, pre_content, pre_content_list;
+non terminal String table_tag , tr_tag, table_cell, table_cell_list, td_tag, tr_tag_list,  th_tag, caption_tag; 
+non terminal String title_tag, head_content, head_content_list;
+non terminal String text_content, text_content_element, text_content_list, text_element;
+non terminal String param_element, param_element_list;
+
+non terminal String content_style;
+non terminal String cite_tag;
+non terminal String code_tag;
+non terminal String dfn_tag;
+non terminal String em_tag;
+non terminal String kbd_tag;
+non terminal String strong_tag;
+non terminal String var_tag;
+
+non terminal String physical_style_element;
+non terminal String i_element;
+non terminal String font_element;
+non terminal String small_element;
+non terminal String s_element;
+non terminal String strike_element;
+non terminal String sub_tag;
+non terminal String sup_element;
+non terminal String tt_element;
+non terminal String u_element;
+non terminal String xmp_tag;
+non terminal String map_tag, map_content, area_tag, area_tag_list;
+non terminal String marquee_tag;
+non terminal frameset_tag, frameset_content, frameset_content_list;
+non terminal noframes_tag;
 /* Precedences */
 /* The grammar rules */
 
 
-html_element ::= HTML_START  head_element body_element  HTML_END 
+html_tag ::= HTML_START html_content HTML_END 
 				{: System.out.println("Valid element html"); :}
 				;
+html_content ::= head_tag body_tag
+				{: System.out.println("Valid html body content"); :}
+				| head_tag frameset_tag
+				{: System.out.println("Valid html frameset content"); :}
+				;
 				
-head_content ::= title_element
+head_content ::= ISINDEX
+				{: System.out.println("Valid head content <isindex>"); :}
+				| BASE
+				{: System.out.println("Valid head content <base>"); :}
+				| LINK
+				{: System.out.println("Valid head content <link>"); :}
+				| META
+				{: System.out.println("Valid head content <meta>"); :}
+				| NEXTID
+				{: System.out.println("Valid head content <nextid>"); :}
+				| title_tag
 				{: System.out.println("Valid head content title"); :}
 				|
 				;
 
-head_content_elements ::= head_content head_content_elements
+head_content_list ::= head_content head_content_list
 				{: System.out.println("Valid head content title"); :}
 				| head_content
 				;
 				
-head_element ::=  HEAD_START head_content_elements HEAD_END 
+head_tag ::=  HEAD_START head_content_list HEAD_END 
 				{: System.out.println("Valid head element"); :}
 				;
 				
-body_element ::=  BODY_START content_element BODY_END 
+body_tag ::=  BODY_START body_content_list BODY_END 
 				{: System.out.println("Valid body element"); :}
  				;
 
-content_element ::= content_element body_content
-                  | 
-				;
-element ::= heading
-          | paragraph_element
-          | anchor_element 
-          | BR
-          | ordered_list_element
-          | unordered_list_element
-          | address_element
-          | b_element
-          |
-          ;
-          
+body_content_list ::= body_content body_content_list 
+					{: System.out.println("Valid body element list"); :}
+					|
+					{: System.out.println("Valid body element empty"); :}
+ 					;
+         
 heading ::= h1_element
           | h2_element
           | h3_element
@@ -169,305 +226,497 @@ heading ::= h1_element
           | h6_element         
           ;
 
-h1_element ::=  H1_START   TEXT_CONTENT  H1_END 
+h1_element ::=  H1_START  text_content  H1_END 
 			{: System.out.println("Valid <h1> element"); :}
 			;
-h2_element ::=  H2_START  TEXT_CONTENT  H2_END 
+h2_element ::=  H2_START  text_content  H2_END 
 				{: System.out.println("Valid <h2> element"); :}
 				;
-h3_element ::=  H3_START  TEXT_CONTENT  H3_END 
+h3_element ::=  H3_START  text_content  H3_END 
 				{: System.out.println("Valid <h3> element"); :};
-h4_element ::=  H4_START  TEXT_CONTENT  H4_END 
+h4_element ::=  H4_START  text_content  H4_END 
 				{: System.out.println("Valid <h4> element"); :}
 				;
-h5_element ::=  H5_START  TEXT_CONTENT  H5_END 
+h5_element ::=  H5_START  text_content  H5_END 
 				{: System.out.println("Valid <h5> element"); :}
 				;				
-h6_element ::=  H6_START  TEXT_CONTENT  H6_END 
+h6_element ::=  H6_START  text_content  H6_END 
 				{: System.out.println("Valid <h6> element"); :}
 				;
 				
-anchor_element ::=  A_START anchor_content_element A_END 
+a_tag ::=  A_START a_content_list A_END 
                   {: System.out.println("Valid <a> element"); :}
                   ;
                   
-paragraph_element ::=  P_START  TEXT_CONTENT  P_END 
+p_tag ::=  P_START  text_content  P_END 
 					{: System.out.println("Valid <p> element"); :}
 					;
 				
-
-ordered_list_element ::=  OL_START  list_elements  OL_END 
+ol_tag ::=  OL_START  list_tag_list  OL_END 
                         {: System.out.println("Valid ordered list <ol>"); :}
                       ;
-unordered_list_element ::=  UL_START  list_elements  UL_END 
+ul_tag ::=  UL_START  list_tag_list  UL_END 
                         {: System.out.println("Valid ordered list <ul>"); :}
                       ;
                       
-list_element ::=  LI_START TEXT_CONTENT LI_END  
+list_tag ::=  LI_START flow LI_END  
                {: System.out.println("Valid <li> element"); :}
              ;
 
-list_elements ::= list_element
-                | list_elements list_element
+list_tag_list ::= list_tag list_tag_list
+				{: System.out.println("Valid <li> element list"); :}
                 |
+                {: System.out.println("Valid element list empty"); :}
                 ;
                 
-address_element ::= ADDRESS_START address_content_elements ADDRESS_END
+adrress_tag ::= ADDRESS_START address_content_list ADDRESS_END
 				{: System.out.println("Valid <address> element"); :}
              	;
              
-address_content_elements ::=  address_content_element address_content_elements
-						    {: System.out.println("Valid <address> element content"); :}
- 							|
- 							{: System.out.println("Valid <address> empty"); :}
- 							;
- 							
-address_content_element ::= paragraph_element
-							{: System.out.println("Valid content for <address> element p element"); :}
-							| TEXT_CONTENT
-							{: System.out.println("Valid content for <a> element text content"); :}
-							;
-							
-anchor_content_elements ::= anchor_content_element anchor_content_elements
-							{: System.out.println("Valid for <a> elements"); :}
-							|
-							{: System.out.println("Valid for <a> empty"); :}
-							;
-							
-anchor_content_element ::= heading 
-							{: System.out.println("Valid content for <a> element heading"); :}
-							| TEXT_CONTENT
-							{: System.out.println("Valid content for <a> element text content"); :}
-							;
-							
-b_element ::= B_START TEXT_CONTENT B_END
-			 {: System.out.println("Valid <b> element"); :}
-			 ;
-			 
-applet_content_element ::= body_element
+address_content_list ::=  address_content address_content_list
+					 	{: System.out.println("Valid <address> element content"); :}
+						|
+						{: System.out.println("Valid <address> empty"); :}
 						;
+ 							
+address_content ::= p_tag
+					{: System.out.println("Valid content for <address> element p element"); :}
+					| text_content
+					{: System.out.println("Valid content for <address> element text content"); :}
+					;
+							
+a_content_list ::= a_content a_content_list
+				{: System.out.println("Valid for <a> elements"); :}
+				|
+				{: System.out.println("Valid for <a> empty"); :}
+				;
+							
+a_content ::= heading 
+			{: System.out.println("Valid content for <a> element heading"); :}
+			| text_content
+			{: System.out.println("Valid content for <a> element text_content"); :}
+			;
+							
+b_tag ::= B_START text_element B_END
+		{: System.out.println("Valid <b> element"); :}
+		;
 			 
-applet_element ::= APPLET_START applet_content_element APPLET_END
+applet_content ::= body_content
+					{: System.out.println("Valid <applet>  body_content element"); :}
+					| param_element_list
+					{: System.out.println("Valid <applet>  param_element_list element"); :}
+					;
+			 
+applet_tag ::= APPLET_START applet_content APPLET_END
 					{: System.out.println("Valid <applet> element"); :}
 					;
 
-basefont_element ::= BASEFONT_START body_content BASEFONT_END
+basefont_tag ::= BASEFONT_START body_content BASEFONT_END
 					{: System.out.println("Valid <basefont> element"); :}
 					;
 					
-big_element ::= BIG_START body_content BIG_END
+big_tag ::= BIG_START text_element BIG_END
 					{: System.out.println("Valid <big> element"); :}
 					;
 					
-block_elements ::= block_content block_elements
-				{: System.out.println("Valid block elements"); :}
-				|
-				{: System.out.println("Valid block empty"); :}
-				;
+block ::= block_content block
+			{: System.out.println("Valid block elements"); :}
+			|
+			{: System.out.println("Valid block empty"); :}
+			;
 				
-block_content ::= basefont_element
+block_content ::= ISINDEX
+					{: System.out.println("Valid block content <isindex>"); :}
+				 | basefont_tag
 					{: System.out.println("Valid block content <basefont>"); :}
-				 | blockqoute_element
+				 | blockqoute_tag
 				 	{: System.out.println("Valid block content <blockqoute>"); :}
-				 | center_element
+				 | center_tag
 				 	{: System.out.println("Valid block content <center>"); :}
-				 | dir_element
+				 | dir_tag
 				  	{: System.out.println("Valid block content <dir>"); :}
-				 | div_element
+				 | div_tag
 				  	{: System.out.println("Valid block content <div>"); :}
-				 | dl_element
+				 | dl_tag
 				  	{: System.out.println("Valid block content <dl>"); :}
-				 | form_element
+				 | form_tag
 				  	{: System.out.println("Valid block content <form>"); :}
-				 | listing_element
+				 | listing_tag
 				 	{: System.out.println("Valid block content <listing>"); :}
-				 | menu_element 
+				 | menu_tag 
 					{: System.out.println("Valid block content <menu>"); :}
-				 | nobr_element 
+				 | nobr_tag 
 					{: System.out.println("Valid block content <nobr>"); :}					
-				 | ordered_list_element 
+				 | ol_tag 
 					{: System.out.println("Valid block content <ol>"); :}
-				 | paragraph_element 
+				 | p_tag 
 					{: System.out.println("Valid block content <p>"); :}
-				 | pre_element 
+				 | pre_tag 
 					{: System.out.println("Valid block content <pre>"); :}
-				 | table_element 
+				 | table_tag 
 				 	{: System.out.println("Valid block content <table>"); :}
-				 | unordered_list_element 
+				 | ul_tag 
 					{: System.out.println("Valid block content <ul>"); :}
+				 | xmp_tag 
+					{: System.out.println("Valid block content <xmp>"); :}
 				;
 
 
-body_content ::=  address_element
-				  {: System.out.println("Valid body content <address>"); :}
-				  | block_elements
-				  {: System.out.println("Valid body content block"); :}
-				  | heading
-				  {: System.out.println("Valid body content heading"); :}
-				  | TEXT_CONTENT
+body_content ::=  HR
+				{: System.out.println("Valid body content <hr>"); :}
+				| BGSOUND
+				{: System.out.println("Valid body content <bgsound>"); :}
+				| adrress_tag
+				{: System.out.println("Valid body content <address>"); :}
+				| block
+				{: System.out.println("Valid body content block"); :}
+				| heading
+				{: System.out.println("Valid body content heading"); :}
+				| map_tag
+				{: System.out.println("Valid body content map"); :}
+				| marquee_tag
+				{: System.out.println("Valid body content marquee"); :}
+				| text_content
+				{: System.out.println("Valid body content text"); :}
 				  ;				  
 
-blockqoute_element ::= BLOCKQOUTE_START body_content BLOCKQOUTE_END
-						{: System.out.println("Valid <blockqoute> element"); :}
-						;
+blockqoute_tag ::= BLOCKQOUTE_START body_content BLOCKQOUTE_END
+				{: System.out.println("Valid <blockqoute> element"); :}
+				;
 						
-center_element ::= CENTER_START body_content CENTER_END
+center_tag ::= CENTER_START body_content CENTER_END
 					{: System.out.println("Valid <center> element"); :}
 					;
 					
-dir_element ::= DIR_START list_elements DIR_END
+dir_tag ::= DIR_START list_tag_list DIR_END
 				{: System.out.println("Valid <dir> element"); :}
 				;
 					
 					
-div_element ::= DIV_START body_content DIV_END
+div_tag ::= DIV_START body_content DIV_END
 				{: System.out.println("Valid <div> element"); :}
 				;
 				
-dd_element ::= DD_START  flow_element DD_END
-				{: System.out.println("Valid <dd> element"); :}
-				;
+dd_tag ::= DD_START  flow DD_END
+		{: System.out.println("Valid <dd> element"); :}
+		;
 				
-dt_element ::= DT_START TEXT_CONTENT DT_END
-				{: System.out.println("Valid <dd> element"); :}
-				;
+dt_tag ::= DT_START text_content DT_END
+		{: System.out.println("Valid <dd> element"); :}
+		;
 				
-dl_element ::= 	DL_START dl_content_elements DL_END
+dl_tag ::= 	DL_START dl_content_list DL_END
 				{: System.out.println("Valid <dl> element"); :}
 				;
 
-dl_content_elements ::= dl_content_elements dl_content
+dl_content_list ::= dl_content dl_content_list
 					{: System.out.println("Valid dl content element"); :}
 					;
 						
-dl_content ::=  dt_element dd_element
+dl_content ::=  dt_tag dd_tag
 				{: System.out.println("Valid dl content "); :}
 				; 
 
-flow_element ::= flow_element flow_content
-				{: System.out.println("Valid flow element content"); :}
-				|
-				{: System.out.println("Valid flow element empty"); :}
-				;
+flow ::= flow_content flow 
+			{: System.out.println("Valid flow element content"); :}
+			|
+			{: System.out.println("Valid flow element empty"); :}
+			;
 
-flow_content ::= block_elements 
+flow_content ::= block 
 				{: System.out.println("Valid flow content block elements"); :}
-				|
-				{: System.out.println("Valid flow element empty"); :}
-				| TEXT_CONTENT
+				| text_content
 				{: System.out.println("Valid flow element text"); :}
 				;
 
 				
-form_element ::= FORM_START form_content_elements FORM_END
+form_tag ::= FORM_START form_content_list FORM_END
 				{: System.out.println("Valid flow element text"); :}
 				;
 				
 form_content ::= INPUT
-				{: System.out.println("Valid <form> with input"); :}
+				 {: System.out.println("Valid <form> with input"); :}
 				 | body_content
 				 {: System.out.println("Valid <form>  element body content"); :}
-				 | select_element
+				 | select_tag
 				 {: System.out.println("Valid <form>  element select content"); :}
-				 | textarea_element
+				 | textarea_tag
 				 {: System.out.println("Valid <form>  element textarea content"); :}
 				;
 
-form_content_elements ::= form_content form_content_elements
+form_content_list ::= form_content form_content_list
 						 {: System.out.println("Valid <form> with elements "); :} 
 						;
 						
-listing_element ::= LISTING_START TEXT_CONTENT LISTING_END
+listing_tag ::= LISTING_START TEXT_CONTENT LISTING_END
 					{: System.out.println("Valid <listing> with elements "); :} 
 					;
 		
-menu_element ::= MENU_START list_elements MENU_END
-				{: System.out.println("Valid <menu> element "); :} 
-				;		
+menu_tag ::= MENU_START list_tag_list MENU_END
+			{: System.out.println("Valid <menu> element "); :} 
+			;		
 				
-nobr_element ::= NOBR_START TEXT_CONTENT NOBR_END	
-				{: System.out.println("Valid <nobr> element "); :} 
-				;
+nobr_tag ::= NOBR_START text_content NOBR_END		
+			{: System.out.println("Valid <nobr> element "); :} 
+			;
 				
-pre_element ::= PRE_START pre_content_elements PRE_END
+pre_tag ::= PRE_START pre_content_list PRE_END
 				{: System.out.println("Valid <pre> element "); :} 
 				;
 				
 pre_content ::= BR 
-					{: System.out.println("Valid <pre> element content br"); :} 
+				{: System.out.println("Valid <pre> element content br"); :} 
 				| HR
-					{: System.out.println("Valid <pre> element content hr"); :} 
-				| anchor_element 
-					{: System.out.println("Valid <pre> element content  anchor"); :} 				
+				{: System.out.println("Valid <pre> element content hr"); :} 
+				| a_tag 
+				{: System.out.println("Valid <pre> element content  anchor"); :} 				
 				;
  				
-pre_content_elements ::= pre_content pre_content_elements
+pre_content_list ::= pre_content pre_content_list
 						{: System.out.println("Valid <pre> element content "); :} 
 						|
 						{: System.out.println("Valid <pre> element empty"); :} 
 						;
 				
-select_element ::= SELECT_START option_elements SELECT_END
+select_tag ::= SELECT_START option_tag_list SELECT_END
 					{: System.out.println("Valid <select> element"); :}
 					;
 					
-option_element ::= OPTION_START TEXT_CONTENT OPTION_END
+option_tag ::= OPTION_START TEXT_CONTENT OPTION_END
 				 {: System.out.println("Valid <option> element"); :}
 				 ;
 				 
-option_elements ::= option_element option_elements
+option_tag_list ::= option_tag option_tag_list
 				 {: System.out.println("Valid <option> elements"); :}		 
 				 ;
 
-caption_element ::= CAPTION_START body_content	CAPTION_END
+caption_tag ::= CAPTION_START body_content CAPTION_END
 				 {: System.out.println("Valid <caption> element"); :}	
 				 |	 
 				 ;
 					 
-table_element ::= TABLE_START caption_element tr_elements TABLE_END
+table_tag ::= TABLE_START caption_tag tr_tag_list TABLE_END
 				{: System.out.println("Valid <table> element"); :}	
 				;
 
-td_element ::= TD_START body_content TD_END
+td_tag ::= TD_START body_content TD_END
 				 {: System.out.println("Valid <td> element"); :}	
 				 ;
 				 
-th_element ::= 	TH_START body_content TH_END
+th_tag ::= 	TH_START body_content TH_END
 				 {: System.out.println("Valid <th> element"); :}	
 				 ;	
 				 	 
-table_cell  ::= td_element 
+table_cell  ::= td_tag 
 				{: System.out.println("Valid <table cell> element td"); :}	
-				| th_element
+				| th_tag
 				{: System.out.println("Valid <table cell> element th"); :}	
 				;
 
-table_cell_elements ::= table_cell table_cell_elements
+table_cell_list ::= table_cell table_cell_list
 					{: System.out.println("Valid table celles"); :}
 					| table_cell
 					;
 
 
-tr_elements ::= tr_element tr_elements 
+tr_tag_list ::= tr_tag tr_tag_list 
 				{: System.out.println("Valid <th> element"); :}
-				| tr_element
+				| tr_tag
 				;					
 
-tr_element ::=  TR_START table_cell_elements TR_END
+tr_tag ::=  TR_START table_cell_list TR_END
 				{: System.out.println("Valid <tr> element"); :}
 				;
 
 
 
-textarea_element ::= TEXTAREA_START TEXT_CONTENT TEXTAREA_START
+textarea_tag ::= TEXTAREA_START TEXT_CONTENT TEXTAREA_START
 					{: System.out.println("Valid <textarea> elements"); :}
 					;
 					
-title_element ::= TITLE_START TEXT_CONTENT TITLE_END
+title_tag ::= TITLE_START TEXT_CONTENT TITLE_END
 				{: System.out.println("Valid <title> elements"); :}
 				;
+				
+text_element ::= text_content_list
+				{: System.out.println("Valid text element"); :}
+				;				
+
+text_content_list ::= text_content_element text_content_list
+					{: System.out.println("Valid text element list"); :}
+					;	
+					
+text_content_element ::= BR
+					{: System.out.println("Valid <br> element in text_content_element"); :}
+					| IMG
+					{: System.out.println("Valid <img> element in text_content_element"); :}
+					| WBR
+					{: System.out.println("Valid <wbr> element in text_content_element"); :}
+					| a_tag
+					{: System.out.println("Valid <a> element in text_content_element"); :}	
+					| applet_tag	
+					{: System.out.println("Valid <applet> element in text_content_element"); :}	
+					| content_style	
+					{: System.out.println("Valid <content_style> element in text_content_element"); :}	
+					| TEXT_CONTENT
+					{: System.out.println("Valid text  in text_content_element"); :}
+					| physical_style_element
+					{: System.out.println("Valid physical_style  in text_content_element"); :}				
+					;
+					
+param_element ::= PARAM
+			 	{: System.out.println("Valid <param> element"); :}	
+				;
+				
+param_element_list::= param_element param_element_list
+			 	{: System.out.println("Valid <param> element list"); :}
+			 	|	
+			 	{: System.out.println("Valid <param> empty"); :}
+				;
+
+
+content_style ::= cite_tag
+					{: System.out.println("Valid content_style cite_tag "); :}	
+					| code_tag
+					{: System.out.println("Valid content_style code_tag "); :}
+					| dfn_tag
+					{: System.out.println("Valid content_style dfn_tag "); :}
+					| em_tag
+					{: System.out.println("Valid content_style em_tag "); :}
+					| kbd_tag
+					{: System.out.println("Valid content_style kbd_tag "); :}
+					| strong_tag
+					{: System.out.println("Valid content_style strong_tag "); :}
+					| var_tag
+					{: System.out.println("Valid content_style var_tag "); :}
+						;
+			
+cite_tag ::= CITE_START text_element CITE_END
+				{: System.out.println("Valid <cite> element"); :}	
+				;
+				
+code_tag ::= CODE_START text_element CODE_END
+				{: System.out.println("Valid <code> element"); :}	
+				;
+
+dfn_tag ::= DFN_START text_element DFN_END
+			{: System.out.println("Valid <dfn> element"); :}	
+			;
+			
+em_tag ::= EM_START text_element EM_END
+			{: System.out.println("Valid <em> element"); :}	
+			;
+				
+kbd_tag ::= KBD_START text_element KBD_END
+			{: System.out.println("Valid <kbd> element"); :}	
+			;
+			
+strong_tag ::= STRONG_START text_element STRONG_END
+			{: System.out.println("Valid <strong> element"); :}	
+			;
+			
+var_tag ::= VAR_START text_element VAR_END
+			{: System.out.println("Valid <var> element"); :}	
+			;
+			
+physical_style_element ::= b_tag
+						{: System.out.println("Valid <b> element in physical_style"); :}
+						| big_tag	
+						{: System.out.println("Valid <big> element in physical_style"); :}
+						| i_element
+						{: System.out.println("Valid <i> element in physical_style"); :}
+						| font_element
+						{: System.out.println("Valid <i> element in physical_style"); :}
+						| small_element
+						{: System.out.println("Valid <i> element in physical_style"); :}
+						| strike_element
+						{: System.out.println("Valid <strike> element in physical_style"); :}
+						| sub_tag
+						{: System.out.println("Valid <sub> element in physical_style"); :}
+						| sup_element
+						{: System.out.println("Valid <sup> element in physical_style"); :}
+						| tt_element
+						{: System.out.println("Valid <tt> element in physical_style"); :}
+						| u_element
+						{: System.out.println("Valid <u> element in physical_style"); :}
+						;
+						
+i_element ::= I_START text_element I_END
+			  {: System.out.println("Valid <i> element"); :}
+			  ;
+
+font_element ::= FONT_START text_element FONT_END
+			  {: System.out.println("Valid <font> element"); :}
+			  ;
+			  
+small_element ::= SMALL_START text_element SMALL_END
+			  {: System.out.println("Valid <small> element"); :}
+			  ;
+
+s_element ::= S_START text_element S_END
+			  {: System.out.println("Valid <small> element"); :}
+			  ;
+			 
+strike_element ::= STRIKE_START text_element STRIKE_END
+			  {: System.out.println("Valid <strike> element"); :}
+			  ;
+
+sub_tag ::= SUB_START text_element SUB_END
+			{: System.out.println("Valid <sub> element"); :}
+			;
+
+sup_element ::= SUP_START text_element SUP_END
+			  {: System.out.println("Valid <sup> element"); :}
+			  ;
+			  
+tt_element ::= TT_START text_element TT_END
+			  {: System.out.println("Valid <tt> element"); :}
+			  ;
+			  
+u_element ::= U_START text_element U_END
+			  {: System.out.println("Valid <u> element"); :}
+			  ;
+			  
+xmp_tag ::= XMP_START TEXT_CONTENT XMP_END
+		 	{: System.out.println("Valid <xmp> element"); :}
+			;
+			  
+area_tag ::= AREA
+			{: System.out.println("Valid <area> element"); :}
+			;
+			  
+map_content ::= area_tag map_content
+			{: System.out.println("Valid map content element"); :}
+			;
+			
+map_tag ::= MAP_START map_content MAP_END
+			{: System.out.println("Valid <map> element"); :}
+			;
+			  
+marquee_tag ::= MARQUEE_START TEXT_CONTENT MARQUEE_END
+				{: System.out.println("Valid <marquee> element"); :}
+				;
+				
+frameset_tag ::= FRAMESET_START frameset_content_list FRAMESET_END
+				{: System.out.println("Valid <noframes> element"); :}
+				;
+frameset_content::=  FRAME noframes_tag 
+				{: System.out.println("Valid frame content element"); :}
+				;
+frameset_content_list::= frameset_content frameset_content_list
+				{: System.out.println("Valid frame content list"); :}
+				;
+
+noframes_tag ::= NOFRAMES_START body_content_list NOFRAMES_END
+ 				{: System.out.println("Valid <noframes> element"); :}
+				;
+
+
 
 						
+
+
+
 					
 
 
